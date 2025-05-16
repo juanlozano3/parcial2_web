@@ -1,26 +1,40 @@
-import { Injectable } from '@nestjs/common';
-import { CreateActividadDto } from './dto/create-actividad.dto';
-import { UpdateActividadDto } from './dto/update-actividad.dto';
-
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { Actividad } from './entities/actividad.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+@Injectable()
 @Injectable()
 export class ActividadService {
-  create(createActividadDto: CreateActividadDto) {
-    return 'This action adds a new actividad';
+  constructor(
+    @InjectRepository(Actividad)
+    private actividadRepo: Repository<Actividad>,
+  ) {}
+
+  async crearActividad(data: Partial<Actividad>): Promise<Actividad> {
+    const { titulo } = data;
+    if (titulo === undefined) {
+      throw new BadRequestException('Datos incompletos');
+    }
+    if (titulo.length < 15) {
+      throw new BadRequestException('No cumple los requisitos');
+    }
+    const valido = /^[a-zA-Z0-9\s]+$/;
+    if (!valido.test(titulo)) {
+      throw new BadRequestException('El título no puede contener símbolos');
+    }
+    const nuevoActividad = this.actividadRepo.create(data);
+    return this.actividadRepo.save(nuevoActividad);
   }
 
-  findAll() {
-    return `This action returns all actividad`;
-  }
+  async findAllActividadesByDate(fecha: string): Promise<Actividad[]> {
+    if (!fecha) {
+      throw new BadRequestException('La fecha es obligatoria');
+    }
 
-  findOne(id: number) {
-    return `This action returns a #${id} actividad`;
-  }
+    const actividades = await this.actividadRepo.find({
+      where: { fecha },
+    });
 
-  update(id: number, updateActividadDto: UpdateActividadDto) {
-    return `This action updates a #${id} actividad`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} actividad`;
+    return actividades;
   }
 }
