@@ -1,11 +1,12 @@
 import { Estudiante } from 'src/estudiante/entities/estudiante.entity';
 import { Resenia } from 'src/resenia/entities/resenia.entity';
 import {
-  Entity,
-  PrimaryGeneratedColumn,
   Column,
+  Entity,
   ManyToMany,
   OneToMany,
+  PrimaryGeneratedColumn,
+  JoinTable,
 } from 'typeorm';
 @Entity()
 export class Actividad {
@@ -25,6 +26,7 @@ export class Actividad {
   estado: number;
 
   @ManyToMany(() => Estudiante, (estudiante) => estudiante.actividades)
+  @JoinTable()
   inscritos: Estudiante[];
 
   @OneToMany(() => Resenia, (resenia) => resenia.actividad)

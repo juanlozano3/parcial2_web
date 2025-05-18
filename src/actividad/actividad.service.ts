@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { Actividad } from './entities/actividad.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -36,5 +40,39 @@ export class ActividadService {
     });
 
     return actividades;
+  }
+  async cambiarEstado(
+    actividadID: number,
+    nuevoEstado: number,
+  ): Promise<string> {
+    const actividad = await this.actividadRepo.findOne({
+      where: { id: actividadID },
+      relations: ['inscritos'],
+    });
+
+    if (!actividad) {
+      throw new NotFoundException('Actividad no encontrada');
+    }
+
+    const totalInscritos = actividad.inscritos.length;
+    const cupo = actividad.cupoMax;
+
+    if (nuevoEstado === 1) {
+      const porcentaje = (totalInscritos / cupo) * 100;
+      if (porcentaje < 80) {
+        throw new BadRequestException(' menos del 80% del cupo ');
+      }
+    } else if (nuevoEstado === 2) {
+      if (totalInscritos < cupo) {
+        throw new BadRequestException('aún hay cupo disponible');
+      }
+    } else if (nuevoEstado !== 0) {
+      throw new BadRequestException('Estado no válido');
+    }
+
+    actividad.estado = nuevoEstado;
+    await this.actividadRepo.save(actividad);
+
+    return `Estado cambiado exitosamente a ${nuevoEstado}`;
   }
 }

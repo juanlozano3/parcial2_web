@@ -41,7 +41,6 @@ export class EstudianteService {
 
     return estudiante;
   }
-
   async inscribirseActividad(
     estudianteID: number,
     actividadID: number,
@@ -62,18 +61,19 @@ export class EstudianteService {
     }
 
     if (actividad.estado !== 0) {
-      throw new BadRequestException('La actividad no está abierta ');
+      throw new BadRequestException('La actividad no está abierta');
     }
 
-    const cantidadInscritos = actividad.inscritos.length || 0;
-    if (cantidadInscritos >= actividad.cupoMax) {
+    const inscritosActuales = actividad.inscritos.length || 0;
+    if (inscritosActuales >= actividad.cupoMax) {
       throw new BadRequestException('No hay cupo disponible');
     }
 
-    const yaInscrito = actividad.inscritos.some((e) => e.id === estudianteID);
-
+    const yaInscrito = actividad.inscritos.some(
+      (inscrito) => inscrito.id === estudianteID,
+    );
     if (yaInscrito) {
-      throw new BadRequestException('Ya existe una inscripción ');
+      throw new BadRequestException('Ya estás inscrito en esta actividad');
     }
 
     actividad.inscritos.push(estudiante);

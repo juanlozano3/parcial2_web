@@ -22,6 +22,7 @@ export class ReseniaService {
   async agregarReseña(
     estudianteID: number,
     actividadID: number,
+    data: Partial<Resenia>,
   ): Promise<string> {
     const estudiante = await this.estudianteRepo.findOne({
       where: { id: estudianteID },
@@ -49,7 +50,15 @@ export class ReseniaService {
       );
     }
 
+    const { comentario, calificacion, fecha } = data;
+    if (!comentario || calificacion === undefined || !fecha) {
+      throw new BadRequestException('Faltan datos de la reseña');
+    }
+
     const nuevaReseña = this.reseniaRepo.create({
+      comentario,
+      calificacion,
+      fecha,
       estudiante,
       actividad,
     });

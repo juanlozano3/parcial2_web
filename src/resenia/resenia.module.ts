@@ -5,10 +5,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Resenia } from './entities/resenia.entity';
 import { Action } from 'rxjs/internal/scheduler/Action';
 import { Estudiante } from 'src/estudiante/entities/estudiante.entity';
+import { ActividadModule } from 'src/actividad/actividad.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Resenia, Action, Estudiante])],
+  imports: [
+    TypeOrmModule.forFeature([Resenia, Action, Estudiante]),
+    ActividadModule,
+  ],
   controllers: [ReseniaController],
   providers: [ReseniaService],
+  exports: [TypeOrmModule],
 })
 export class ReseniaModule {}
