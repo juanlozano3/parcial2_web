@@ -35,9 +35,9 @@ describe('EstudianteService', () => {
     const data = {
       cedula: 123,
       nombre: 'Juan',
-      correo: 'Juan@mail.com',
+      correo: 'Juan@gmail.com',
       programa: 'Ingeniería',
-      semestre: 5,
+      semestre: 8,
     };
     jest.spyOn(estudianteRepo, 'create').mockReturnValue(data as Estudiante);
     jest.spyOn(estudianteRepo, 'save').mockResolvedValue(data as Estudiante);
@@ -52,7 +52,7 @@ describe('EstudianteService', () => {
       nombre: 'Juan',
       correo: 'juan@com.',
       programa: 'Ingeniería',
-      semestre: 5,
+      semestre: 8,
     };
     await expect(service.crearEstudiante(data)).rejects.toThrow(
       BadRequestException,
@@ -69,7 +69,7 @@ describe('EstudianteService', () => {
     const result = await service.findEstudianteById(1);
     expect(result).toEqual(estudiante);
   });
-  it('inscribe Bien si hay cupo y la actividad está abierta', async () => {
+  it('inscribe bien si hay cupo y la actividad está abierta', async () => {
     const estudianteId = 1;
     const actividadId = 1;
 
@@ -134,7 +134,7 @@ describe('EstudianteService', () => {
     const estudiante = { id: estudianteId } as Estudiante;
     const actividad = {
       id: actividadId,
-      estado: 1, // cerrada
+      estado: 1,
       cupoMax: 10,
       inscritos: [],
       titulo: '',

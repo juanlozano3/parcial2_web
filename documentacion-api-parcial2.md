@@ -12,7 +12,7 @@
 {
   "cedula": 123456,
   "nombre": "JuanLozano",
-  "correo": "juan@mail.com",
+  "correo": "juan@gmail.com",
   "programa": "Ingeniería",
   "semestre": 8
 }
@@ -25,7 +25,7 @@
   "id": 1,
   "cedula": 123456,
   "nombre": "Juan Lozano",
-  "correo": "juan@mail.com",
+  "correo": "juan@gmail.com",
   "programa": "Ingeniería",
   "semestre": 8
 }
@@ -43,7 +43,7 @@
 {
   "id": 1,
   "nombre": "Juan Lozano",
-  "correo": "juan@mail.com",
+  "correo": "juan@gmail.com",
   "semestre": 8
 }
 ```

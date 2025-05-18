@@ -9,6 +9,6 @@ import { Actividad } from 'src/actividad/entities/actividad.entity';
   imports: [TypeOrmModule.forFeature([Estudiante, Actividad])],
   controllers: [EstudianteController],
   providers: [EstudianteService],
-  exports: [TypeOrmModule], // <-- ¡esto es clave!
+  exports: [TypeOrmModule],
 })
 export class EstudianteModule {}

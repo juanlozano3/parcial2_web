@@ -61,7 +61,7 @@ describe('ActividadService', () => {
         nombre: 'Juan',
         correo: 'juan@gmail.com',
         programa: 'Ingeniería',
-        semestre: 5,
+        semestre: 8,
         actividades: [],
         resenias: [],
       }),
@@ -87,7 +87,7 @@ describe('ActividadService', () => {
         nombre: 'Estudiante',
         correo: `correo${i}@gmail.com`,
         programa: 'Ing',
-        semestre: 3,
+        semestre: 8,
         actividades: [],
         resenias: [],
       })) as Estudiante[],
@@ -103,7 +103,7 @@ describe('ActividadService', () => {
     const result = await service.cambiarEstado(1, 2);
     expect(result).toBe('Estado cambiado exitosamente a 2');
   });
-  it('retorna actividades con fecha exacta', async () => {
+  it('retorna actividades con fecha ', async () => {
     const fecha = '2024-05-17';
     const actividades = [
       {
